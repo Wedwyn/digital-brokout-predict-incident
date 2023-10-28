@@ -118,3 +118,13 @@ h2 {
 .buttons button:active {
   background-color: #696969;
 }
+
+a {
+  color: white;
+  text-decoration: none;
+  font-size: 2.4vh;
+}
+
+a:hover {
+  color: white;
+}

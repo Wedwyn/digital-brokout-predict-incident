@@ -9,12 +9,6 @@ model_path = os.path.join(app.root_path, 'RandomForrestRegressor.joblib')
 
 model = joblib.load(model_path)
 
-# model = joblib.load('./RandomForrestRegresssor.joblib')
-
-# @app.route('/')
-# def hello_world():
-#   return render_template('index.html', 'name'='Testing template')
-
 areas = [{ 'name': 'Краснокамский городской округ', 'predict': 0 },
          { 'name': 'Пермский муниципальный округ', 'predict': 0 },
    { 'name': 'Пермский городской округ', 'predict': 0 },

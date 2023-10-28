@@ -1,68 +1,20 @@
-var overpassApiUrl = 'https://overpass-api.de/api/interpreter';
-
+// Создаем карту 
 var map = L.map('map').setView([58.08, 55.74], 7);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
   }).addTo(map);
 
-// let geoLayer = null;
-// let layers = L.layerGroup().addTo(map);
+// Массив слоев карты
 let layers = [];
 
-// var areasNames = [
-//   { name: 'Краснокамский городской округ', color: 'red' },
-//   { name: 'Пермский муниципальный округ', color: 'green' },
-//   { name: 'Пермский городской округ', color: 'red' },
-//   { name: 'Соликамский городской округ', color: 'red' },
-//   { name: 'Кунгурский муниципальный округ', color: 'red' },
-//   { name: 'городской округ Березники', color: 'green' },
-//   { name: 'Суксунский городской округ', color: 'green' },
-//   { name: 'Чайковский городской округ', color: 'green' },
-//   { name: 'Чусовской городской округ', color: 'red' },
-//   { name: 'Лысьвенский городской округ', color: 'green' },
-//   { name: 'Добрянский городской округ', color: 'red' },
-//   { name: 'Кудымкарский муниципальный округ', color: 'green' },
-//   { name: 'Нытвенский городской округ', color: 'green' },
-//   { name: 'Губахинский муниципальный округ', color: 'green' },
-//   { name: 'Чернушинский городской округ', color: 'green' },
-//   { name: 'Верещагинский городской округ', color: 'green' },
-//   { name: 'Октябрьский городской округ', color: 'red' },
-//   { name: 'Горнозаводский городской округ', color: 'green' },
-//   { name: 'Куединский муниципальный округ', color: 'yellow' },
-//   { name: 'Осинский городской округ', color: 'green' },
-//   { name: 'городской округ Кизел', color: 'yellow' },
-//   { name: 'Красновишерский городской округ', color: 'green' },
-//   { name: 'Бардымский муниципальный округ', color: 'red' },
-//   { name: 'Карагайский муниципальный округ', color: 'green' },
-//   { name: 'Ильинский городской округ', color: 'green' },
-//   { name: 'Берёзовский муниципальный округ', color: 'yellow' },
-//   { name: 'Юсьвинский муниципальный округ', color: 'green' },
-//   { name: 'Чердынский городской округ', color: 'green' },
-//   { name: 'Частинский муниципальный округ', color: 'red' },
-//   { name: 'Кишертский муниципальный округ', color: 'green' },
-//   { name: 'Гайнский муниципальный округ', color: 'red' },
-//   { name: 'Большесосновский муниципальный округ', color: 'green' },
-//   { name: 'Оханский городской округ', color: 'green' },
-//   { name: 'Кочёвский муниципальный округ', color: 'yellow' },
-//   { name: 'Ординский муниципальный округ', color: 'green' },
-//   { name: 'Очёрский городской округ', color: 'green' },
-//   { name: 'Еловский муниципальный округ', color: 'red' },
-//   { name: 'Сивинский муниципальный округ', color: 'red' },
-//   { name: 'Юрлинский муниципальный округ', color: 'green' },
-//   { name: 'Уинский муниципальный округ', color: 'green' },
-//   { name: 'Косинский муниципальный округ', color: 'green' },
-//   {
-//     name: 'Александровский муниципальный округ',
-//     color: 'red',
-//     popupText: 'Уровень угроз ебанутый, все убегаем',
-//   },
-// ];
-// fetch('/getPredicts');
+var overpassApiUrl = 'https://overpass-api.de/api/interpreter';
+
 var element = document.querySelector('.leaflet-bottom.leaflet-right');
 if (element) {
     element.remove();
 }
 
+// Вешаем на каждую кнопку обработку события клика
 for (let j = 1; j <= 10; j += 1) {
   console.log(`J counter ${j}`);
   document.getElementById(`button-${j}`).addEventListener('click', function(){
@@ -70,16 +22,16 @@ for (let j = 1; j <= 10; j += 1) {
   });
 }
 
-async function fetchData(id = 0) {
-
+// Функция получения данных о предиктах с бэкенда
+async function fetchData(id = 0) { // id обозначает порядковый номер дня, на которых мы прогнозируем
   try {
     const response = await fetch(`/getPredicts?id=${id}`);
     const areasNames = await response.json();
-    layers.forEach(layer => map.removeLayer(layer));
+    layers.forEach(layer => map.removeLayer(layer)); // Удаляем все слои карты, чтобы они не накладывались при нескольких запросах
     layers = []; // очищаем массив
-    for (let i = 0; i < areasNames.length; i += 1) {
+    for (let i = 0; i < areasNames.length; i += 1) { // Делаем запрос для каждой области для получения карты, если его уже делали, загружаем из кэша
       var overpassQuery = '';
-      if (areasNames[i].name === 'Александровский муниципальный округ') {
+      if (areasNames[i].name === 'Александровский муниципальный округ') { // Существует два таких региона, поэтому уточняем регион
         overpassQuery = `[out:json];relation["name"="${areasNames[i].name}"]["addr:region"="Пермский край"];out geom;`;
       } else {
         overpassQuery = `[out:json];relation["name"="${areasNames[i].name}"];out geom;`;
@@ -89,10 +41,7 @@ async function fetchData(id = 0) {
         .then((response) => response.json())
         .then((data) => {
           var osmData = osmtogeojson(data);
-          // layers.clearLayers();
-          // L.geoJSON(osmData, {...}).addTo(layers);
-          // if (geoLayer) map.removeLayer(geoLayer);
-          var geoLayer = L.geoJSON(osmData, {
+          var geoLayer = L.geoJSON(osmData, { // Добавляем слой на карту из полученных с overpass api данных
             onEachFeature: function (feature, layer) {
               layer.bindPopup(areasNames[i].popupText);
               layer.bindTooltip(areasNames[i].name);
@@ -107,8 +56,8 @@ async function fetchData(id = 0) {
               }
               // Костыль пока
             },
-          }).addTo(map);
-          layers.push(geoLayer);
+          }).addTo(map); // Добавляем слой на карту
+          layers.push(geoLayer); // Добавляем слой в наш массив слоев
         })
         .catch((error) => console.error('Ошибка:', error));
     }
