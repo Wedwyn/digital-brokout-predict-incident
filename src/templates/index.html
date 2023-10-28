@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head >
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+    <header>
+    <nav>
+      <button class="header-button"><a>Главная</a></button>
+    </nav>
+    </header>
+
+    <div id='titleText'>
+        <h1>Карта прогнозирования происшествий Пермского края</h1>
+    </div>
+
+    <div class = "main">
+        <div id="map"></div>
+        <div id="legend">
+            <h2>Обозначения:</h2>
+            <p class="green"> Район с низким уровнем происшествий</p>
+            <p class='yellow'> Район с повышенным уровнем происшествий</p>
+            <p class="red"> Красный: Район с высоким уровнем происшествий</p>
+        </div>
+    </div>
+    <h2>Выбрать день для прогнозирования</h2>
+    <div class="buttons">
+        <button id ='button-1'>1</button>
+        <button id ='button-2'>2</button>
+        <button id ='button-3'>3</button>
+        <button id ='button-4'>4</button>
+        <button id ='button-5'>5</button>
+        <button id ='button-6'>6</button>
+        <button id ='button-7'>7</button>
+        <button id ='button-8'>8</button>
+        <button id ='button-9'>9</button>
+        <button id ='button-10'>10</button>
+    </div>
+
+    <footer>
+    <p>Сделано командой три фронтендера</p>
+    </footer>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/osmtogeojson@3.0.0-beta.5/osmtogeojson.min.js"></script>
+
+    <!-- <script src="js/areas.js"></script> -->
+    <script src="{{ url_for('static', filename='js/areas.js') }}"></script>
+
+</body>
+</html>

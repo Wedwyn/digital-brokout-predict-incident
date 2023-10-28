@@ -1,0 +1,120 @@
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+
+header {
+  height: 7vh;
+  background-color: #4d4dff;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+header .header-button {
+  color: white;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+}
+
+footer {
+  height: 60px;
+  background-color: #4d4dff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3vh;
+}
+
+#map {
+  height: 70vh;
+  width: 60vw;
+  position: relative;
+  /* background-color: blue; */
+}
+
+.leaflet-tooltip {
+  font-size: 130% !important;
+  font-weight: bold !important;
+}
+.leaflet-pane *:focus {
+  outline: none;
+}
+
+.main {
+  margin: 1vh 1vw 3vh 5vw;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#titleText {
+  margin-left: 3vw;
+}
+
+#titleText h1 {
+  font-family: Arial, sans-serif;
+  color: #333;
+  font-size: 2em;
+}
+
+#legend {
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin-left: 2vw;
+  /*padding-top: 1em;*/
+}
+
+.green::before, .yellow::before, .red::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.green::before {
+  background-color: #00cc66;
+}
+
+.yellow::before {
+  background-color: #ffff66;
+}
+
+.red::before {
+  background-color: #e60000;
+}
+
+.buttons {
+  display: flex;
+  margin: 0px 0px 10vh 3vw;
+  margin-bottom: 2px;
+}
+
+.buttons button {
+  padding: 15px;
+  margin: 5px;
+  border: none;
+  background-color: #f0f0f0;
+}
+
+h2 {
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin-left: 3.5vw;
+}
+
+.buttons button:hover {
+  background-color: #909090;
+}
+
+.buttons button:active {
+  background-color: #696969;
+}
