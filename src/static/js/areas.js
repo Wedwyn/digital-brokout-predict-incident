@@ -16,14 +16,13 @@ if (element) {
 
 // Вешаем на каждую кнопку обработку события клика
 for (let j = 1; j <= 10; j += 1) {
-  console.log(`J counter ${j}`);
   document.getElementById(`button-${j}`).addEventListener('click', function(){
     fetchData(j);
   });
 }
 
 // Функция получения данных о предиктах с бэкенда
-async function fetchData(id = 0) { // id обозначает порядковый номер дня, на которых мы прогнозируем
+async function fetchData(id = 1) { // id обозначает порядковый номер дня, на которых мы прогнозируем
   try {
     const response = await fetch(`/getPredicts?id=${id}`);
     const areasNames = await response.json();
@@ -48,12 +47,15 @@ async function fetchData(id = 0) { // id обозначает порядковы
 
             },
             style: function (feature) {
-              console.log(id);
-              if (Number(id) === 4) {
-                return { color: `${ i % 3 === 1 ? 'red': i % 3 === 2 ? 'green' : 'yellow'}` }
-              } else {
-                return { color: `${ i % 3 === 1 ? 'green': i % 3 === 2 ? 'yellow' : 'red'}` };
+              if (areasNames[i].predict[0][0] - areasNames[i].predict[1] < 0) {
+                if (1 - Math.abs(areasNames[i].predict[0][0] / areasNames[i].predict[1]) < 0.25) {
+                  return {color: 'yellow'}
+                }
+                return {color: 'red'}
+              } else if (areasNames[i].predict[0][0] - areasNames[i].predict[1] > 0) {
+                return { color: 'green' }
               }
+              // return { color: 'yellow' }
               // Костыль пока
             },
           }).addTo(map); // Добавляем слой на карту
